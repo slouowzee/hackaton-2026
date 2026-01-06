@@ -3,22 +3,24 @@
     "name": "hackaton",
     "slug": "hackaton",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
     "scheme": "hackaton",
+    "orientation": "portrait",
+    "icon": "./assets/images/Sporty.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/splash-icon.png",
+      "image": "./assets/images/Sporty-full-wo-bg.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gaelpilet.hackaton"
     },
     "android": {
+      "package": "com.gaelpilet.hackaton",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/Sporty.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
