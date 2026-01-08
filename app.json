@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "hackaton",
-    "slug": "hackaton",
+    "name": "Sporty",
+    "slug": "sporty",
     "version": "1.0.0",
-    "scheme": "hackaton",
+    "scheme": "sporty",
     "orientation": "portrait",
     "icon": "./assets/images/Sporty.png",
     "userInterfaceStyle": "automatic",
@@ -15,10 +15,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.gaelpilet.hackaton"
+      "bundleIdentifier": "com.gaelpilet.sporty"
     },
     "android": {
-      "package": "com.gaelpilet.hackaton",
+      "package": "com.gaelpilet.sporty",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/Sporty.png",
         "backgroundColor": "#ffffff"
