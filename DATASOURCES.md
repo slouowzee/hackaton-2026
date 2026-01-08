@@ -22,12 +22,6 @@ Ces jeux de données sont utilisés pour référencer les infrastructures.
     *   URL : [https://angersloiremetropole.opendatasoft.com/explore/dataset/zone-de-stationnement-payant-angers/information/](https://angersloiremetropole.opendatasoft.com/explore/dataset/zone-de-stationnement-payant-angers/information/)
     *   *Usage : Informations complémentaires sur le stationnement voirie.*
 
-## 🌦️ Météo
-
-*   **OpenWeatherMap** (Recommandé)
-    *   URL : [https://openweathermap.org/api](https://openweathermap.org/api)
-    *   *Usage : Afficher la météo actuelle au-dessus du terrain de sport sélectionné.*
-
 ## 📍 Itinéraires et Temps de trajet
 
 *   **Google Maps Platform** (Directions API & Distance Matrix API)

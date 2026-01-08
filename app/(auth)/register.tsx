@@ -50,8 +50,8 @@ export default function RegisterScreen() {
     if (error) {
       Alert.alert('Erreur', error.message)
     } else {
-      // Assuming successful flow for UX
-      router.replace('/')
+      // Navigate to onboarding flow
+      router.replace('/onboarding/step1')
     }
     setLoading(false)
   }

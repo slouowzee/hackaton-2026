@@ -1,7 +1,7 @@
 import { Session } from '@supabase/supabase-js'
 import { router } from 'expo-router'
 import { useEffect, useState } from 'react'
-import { Button, H1, Text, View, YStack } from 'tamagui'
+import { Spinner, View } from 'tamagui'
 import { supabase } from '../lib/supabase'
 
 export default function HomeScreen() {
@@ -9,42 +9,35 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // 1. Check Initiale
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       setLoading(false)
-      if (!session) {
-        router.replace('/(auth)/login')
-      }
+      handleNavigation(session)
     })
 
-    supabase.auth.onAuthStateChange((_event, session) => {
+    // 2. Écoute les changements (connexion, déconnexion)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
-      if (!session) {
-        router.replace('/(auth)/login')
-      }
+      handleNavigation(session)
     })
+
+    return () => subscription.unsubscribe()
   }, [])
 
-  if (loading) {
-     return <View flex={1} backgroundColor="$background" />
+  const handleNavigation = (session: Session | null) => {
+    if (session) {
+      // @ts-ignore: Route existe bien mais Expo Router n'a pas encore régénéré les types
+      router.replace('/(tabs)')
+    } else {
+      router.replace('/(auth)/login')
+    }
   }
 
+  // Écran de chargement minimal pendant la décision
   return (
-    <View flex={1} alignItems="center" justifyContent="center" padding="$4" backgroundColor="$background">
-      <YStack space="$4" alignItems="center">
-        <H1>Bienvenue !</H1>
-        <Text>Vous êtes connecté en tant que :</Text>
-        <Text fontWeight="bold">{session?.user?.email}</Text>
-        
-        <Button 
-          onPress={async () => {
-            await supabase.auth.signOut()
-          }} 
-          themeInverse
-        >
-          Se déconnecter
-        </Button>
-      </YStack>
+    <View flex={1} alignItems="center" justifyContent="center" backgroundColor="white">
+       <Spinner size="large" color="$green10" />
     </View>
   )
 }
