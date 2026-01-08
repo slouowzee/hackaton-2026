@@ -1,3 +1,9 @@
+/**
+ * Auth Layout
+ *
+ * Defines the navigation layout for authentication screens (login and register).
+ * Utilizes a tab-based navigation structure with custom styling.
+ */
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import React from 'react';
@@ -5,6 +11,16 @@ import { View } from 'tamagui';
 
 import { useColorScheme } from '@/components/useColorScheme';
 
+/**
+ * TabBarIcon Component
+ *
+ * Renders an icon for the auth tab bar.
+ *
+ * @param {object} props - The component props.
+ * @param {string} props.name - The name of the FontAwesome icon.
+ * @param {string} props.color - The color of the icon.
+ * @returns {JSX.Element} The rendered icon component.
+ */
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
@@ -12,6 +28,13 @@ function TabBarIcon(props: {
   return <FontAwesome size={20} style={{ marginBottom: -3 }} {...props} />;
 }
 
+/**
+ * AuthLayout Component
+ *
+ * Configures the auth tabs and their appearance.
+ *
+ * @returns {JSX.Element} The rendered auth layout component.
+ */
 export default function AuthLayout() {
   const colorScheme = useColorScheme();
   const activeColor = '#10b981';

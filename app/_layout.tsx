@@ -1,3 +1,9 @@
+/**
+ * Root Layout
+ *
+ * Tests the root layout structure, theme configuration, and global providers.
+ * Manages the splash screen and font loading.
+ */
 import CustomSplashScreen from '@/components/CustomSplashScreen';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
@@ -6,11 +12,13 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
-import { TamaguiProvider, Theme, View } from 'tamagui'; // Added View to imports
+import { TamaguiProvider, Theme, View } from 'tamagui';
 import tamaguiConfig from '../tamagui.config';
 
 import { useColorScheme } from '@/components/useColorScheme';
 import Colors from '@/constants/Colors';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { FavoritesProvider } from '../context/FavoritesContext';
 
 const MyLightTheme = {
   ...DefaultTheme,
@@ -38,20 +46,24 @@ const MyDarkTheme = {
   },
 };
 
-
 export {
-    // Catch any errors thrown by the Layout component.
     ErrorBoundary
 } from 'expo-router';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: 'index',
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+/**
+ * RootLayout Component
+ *
+ * Handles font loading and splash screen visibility.
+ * Wraps the application in the TamaguiProvider.
+ *
+ * @returns {JSX.Element | null} The rendered root layout component.
+ */
 export default function RootLayout() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [splashAnimationFinished, setSplashAnimationFinished] = useState(false);
@@ -64,7 +76,6 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
@@ -86,7 +97,6 @@ export default function RootLayout() {
     <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme === 'dark' ? 'dark' : 'light'}>
       <Theme name="green">
         <RootLayoutNav />
-        {/* Render Custom Splash on top until animation is done */}
         {(!appIsReady || !splashAnimationFinished) && (
             <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 99999 }}>
                 <CustomSplashScreen onFinish={() => setSplashAnimationFinished(true)} />
@@ -97,22 +107,36 @@ export default function RootLayout() {
   );
 }
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
 const queryClient = new QueryClient();
 
+/**
+ * RootLayoutNav Component
+ *
+ * Configures the global providers including QueryClient and ThemeProvider.
+ *
+ * @returns {JSX.Element} The rendered navigation layout component.
+ */
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider value={colorScheme === 'dark' ? MyDarkTheme : MyLightTheme}>
-        <StackScreen />
-      </ThemeProvider>
+      <FavoritesProvider>
+        <ThemeProvider value={colorScheme === 'dark' ? MyDarkTheme : MyLightTheme}>
+          <StackScreen />
+        </ThemeProvider>
+      </FavoritesProvider>
     </QueryClientProvider>
   );
 }
 
+/**
+ * StackScreen Component
+ *
+ * Defines the main stack navigator hierarchy.
+ *
+ * @returns {JSX.Element} The rendered stack screen component.
+ */
 function StackScreen() {
     return (
         <Stack>

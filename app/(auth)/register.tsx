@@ -1,3 +1,9 @@
+/**
+ * Register Screen
+ *
+ * Allows new users to create an account using email and password.
+ * Includes form validation for email format and password matching.
+ */
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { router } from 'expo-router'
 import React, { useState } from 'react'
@@ -5,6 +11,13 @@ import { Alert, TextInput } from 'react-native'
 import { Button, H2, Image, Input, ScrollView, Separator, Spinner, Text, View, XStack, YStack } from 'tamagui'
 import { supabase } from '../../lib/supabase'
 
+/**
+ * RegisterScreen Component
+ *
+ * Handles user registration via Supabase authentication.
+ *
+ * @returns {JSX.Element} The rendered registration screen.
+ */
 export default function RegisterScreen() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -13,9 +26,12 @@ export default function RegisterScreen() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-  // Validation function
+  /**
+   * Validates the registration form inputs.
+   *
+   * @returns {boolean} True if the form is valid, otherwise false.
+   */
   const validateForm = () => {
-    // Email regex: simple but effective
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
         Alert.alert('Erreur', 'Veuillez entrer une adresse email valide.')
@@ -35,6 +51,9 @@ export default function RegisterScreen() {
     return true
   }
 
+  /**
+   * Registers a new user with email and password.
+   */
   async function signUpWithEmail() {
     if (!validateForm()) return
 
@@ -50,7 +69,6 @@ export default function RegisterScreen() {
     if (error) {
       Alert.alert('Erreur', error.message)
     } else {
-      // Navigate to onboarding flow
       router.replace('/onboarding/step1')
     }
     setLoading(false)
@@ -58,7 +76,6 @@ export default function RegisterScreen() {
 
   return (
     <View flex={1} backgroundColor="white">
-      {/* Hero Image Section */}
       <View height={320} width="100%" position="relative">
         <Image 
           source={{ uri: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=2000' }} 
@@ -77,7 +94,6 @@ export default function RegisterScreen() {
         />
       </View>
 
-      {/* Form Section */}
       <YStack 
         flex={1} 
         marginTop="$-4" 
@@ -101,10 +117,8 @@ export default function RegisterScreen() {
                     borderColor="transparent"
                     borderRadius="$4"
                     height={50}
-                    // fontFamily="Montserrat"
                 />
                 
-                {/* Password Input */}
                 <View width="100%" height={50} justifyContent="center">
                     <TextInput 
                         placeholder="Mot de passe" 
@@ -136,7 +150,6 @@ export default function RegisterScreen() {
                     />
                 </View>
 
-                {/* Confirm Password Input */}
                 <View width="100%" height={50} justifyContent="center">
                     <TextInput 
                         placeholder="Confirmer le mot de passe" 

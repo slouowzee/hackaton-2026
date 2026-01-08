@@ -1,9 +1,24 @@
+/**
+ * Edit Screen Info Component
+ *
+ * Displays information and helper text for editing a screen during development.
+ * Provides a link to Expo documentation.
+ */
 import React from 'react';
 import { Paragraph, SizableText, YStack } from 'tamagui';
 
 import { ExternalLink } from './ExternalLink';
 import { MonoText } from './StyledText';
 
+/**
+ * EditScreenInfo Component
+ *
+ * Renders the path to the current file and instructions on how to edit it.
+ *
+ * @param {object} props - The component props.
+ * @param {string} props.path - The file path to display.
+ * @returns {JSX.Element} The rendered information component.
+ */
 export default function EditScreenInfo({ path }: { path: string }) {
   return (
     <YStack>

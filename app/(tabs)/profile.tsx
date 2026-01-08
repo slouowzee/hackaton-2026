@@ -1,3 +1,9 @@
+/**
+ * Profile Screen
+ *
+ * Displays the user's profile information, including avatar, username, email, and preferred transport mode.
+ * Allows the user to sign out of the application.
+ */
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,6 +13,14 @@ import { Database } from '../../types/supabase';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
+/**
+ * ProfileScreen Component
+ *
+ * Fetches and displays the current user's profile from Supabase.
+ * Handles the logout process.
+ *
+ * @returns {JSX.Element} The rendered profile screen component.
+ */
 export default function ProfileScreen() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);

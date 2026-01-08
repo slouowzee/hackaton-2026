@@ -1,6 +1,15 @@
+/**
+ * Application Colors
+ *
+ * Defines the color palette for the application, including light and dark mode themes.
+ */
 const tintColorLight = '#10b981';
 const tintColorDark = '#34d399';
 
+/**
+ * Color configuration object.
+ * Contains distinct color schemes for 'light' and 'dark' modes.
+ */
 export default {
   light: {
     text: '#1f2937',

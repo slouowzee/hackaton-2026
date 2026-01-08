@@ -1,3 +1,9 @@
+/**
+ * Onboarding Step 1
+ *
+ * Collects initial user profile information after registration.
+ * Users set their username and preferred mode of transport.
+ */
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
@@ -7,11 +13,22 @@ import { Database } from '../../types/supabase';
 
 type TransportMode = Database['public']['Tables']['profiles']['Row']['preferred_transport_mode'];
 
+/**
+ * OnboardingStep1 Component
+ *
+ * Displays a form for the user to enter their profile details.
+ * Saves the data to Supabase profiles table.
+ *
+ * @returns {JSX.Element} The rendered onboarding screen.
+ */
 export default function OnboardingStep1() {
   const [username, setUsername] = useState('');
   const [transportMode, setTransportMode] = useState<TransportMode>('walk');
   const [loading, setLoading] = useState(false);
 
+  /**
+   * Validates input and saves the user profile.
+   */
   const handleFinish = async () => {
     if (!username.trim()) {
       Alert.alert('Oups', 'Merci de choisir un pseudo !');
@@ -28,7 +45,6 @@ export default function OnboardingStep1() {
             return;
         }
 
-        // Save collected data
         const { error } = await supabase
             .from('profiles')
             .upsert({
@@ -40,7 +56,6 @@ export default function OnboardingStep1() {
 
         if (error) throw error;
 
-        // Navigate to dashboard
         // @ts-ignore
         router.replace('/(tabs)');
 
@@ -51,6 +66,17 @@ export default function OnboardingStep1() {
     }
   };
 
+  /**
+   * TransportOption Component
+   *
+   * Renders a selectable button for a transport mode.
+   *
+   * @param {object} props - The component props.
+   * @param {TransportMode} props.mode - The transport mode this option represents.
+   * @param {string} props.label - The display label for the option.
+   * @param {string} props.icon - The emoji icon for the option.
+   * @returns {JSX.Element} The rendered transport option button.
+   */
   const TransportOption = ({ mode, label, icon }: { mode: TransportMode, label: string, icon: string }) => {
     const isSelected = transportMode === mode;
     return (
@@ -76,7 +102,6 @@ export default function OnboardingStep1() {
 
   return (
     <View flex={1} backgroundColor="white">
-      {/* Hero Image */}
       <View height={300} width="100%" position="relative">
         <Image 
           source={{ uri: 'https://images.unsplash.com/photo-1502054824840-5f8d4fe01ae1?q=80&w=2000' }} 

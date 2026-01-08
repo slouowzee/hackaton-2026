@@ -1,3 +1,9 @@
+/**
+ * Custom Splash Screen
+ *
+ * Implements a custom animated splash screen using Reanimated.
+ * Displays a logo and loading text with entrance and exit animations.
+ */
 import React, { useEffect } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import Animated, {
@@ -14,27 +20,32 @@ import { Image as TamaguiImage } from 'tamagui';
 
 const { width, height } = Dimensions.get('window');
 
+/**
+ * CustomSplashScreen Component
+ *
+ * Renders the animated splash screen.
+ * Triggers the onFinish callback when the exit animation completes.
+ *
+ * @param {object} props - The component props.
+ * @param {() => void} props.onFinish - Callback fired when the splash screen animation finishes.
+ * @returns {JSX.Element} The rendered splash screen.
+ */
 export default function CustomSplashScreen({ onFinish }: { onFinish: () => void }) {
-  // 1. Initial State: MATCH NATIVE SPLASH PRECISELY
-  const opacity = useSharedValue(1); // Already visible
-  const scale = useSharedValue(1);   // Normal scale
-  const loadingOpacity = useSharedValue(0); // Text starts invisible
+  const opacity = useSharedValue(1);
+  const scale = useSharedValue(1);
+  const loadingOpacity = useSharedValue(0);
   const translateX = useSharedValue(0);
 
   useEffect(() => {
-    // 2. Animate elements IN (Sequence)
-    
-    // a. Animate loading text (Breathe effect)
     loadingOpacity.value = withRepeat(
         withSequence(
             withTiming(1, { duration: 800 }),
-            withTiming(0.3, { duration: 800 }) // Fade down to 0.3, not completely invisible
+            withTiming(0.3, { duration: 800 })
         ),
-        -1, // Infinite loop
-        true // Reverse
+        -1,
+        true
     );
     
-    // b. Subtle breathing effect on the logo (optional, premium feel)
     scale.value = withRepeat(
         withSequence(
             withTiming(1.05, { duration: 1500, easing: Easing.inOut(Easing.ease) }),
@@ -44,25 +55,21 @@ export default function CustomSplashScreen({ onFinish }: { onFinish: () => void 
         true
     );
 
-    // 3. Exit Animation (The "Slide" you liked)
     const timeout = setTimeout(() => {
-        // Stop breathing
         cancelAnimation(scale);
         scale.value = withTiming(1, { duration: 200 });
 
-        // Fade out text
         loadingOpacity.value = withTiming(0, { duration: 200 });
 
-        // Slide the whole screen away
         translateX.value = withTiming(-width, {
             duration: 650,
-            easing: Easing.bezier(0.22, 1, 0.36, 1), // Custom ease-out-quint like curve
+            easing: Easing.bezier(0.22, 1, 0.36, 1),
         }, (finished) => {
             if (finished) {
                 runOnJS(onFinish)();
             }
         });
-    }, 3000); // Stay for 3 seconds total
+    }, 3000);
 
     return () => clearTimeout(timeout);
   }, []);

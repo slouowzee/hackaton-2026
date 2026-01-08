@@ -1,3 +1,9 @@
+/**
+ * Login Screen
+ *
+ * Allows users to authenticate with their email and password.
+ * Provides options for social logins (UI only for now).
+ */
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { router } from 'expo-router'
 import React, { useState } from 'react'
@@ -7,12 +13,22 @@ import { supabase } from '../../lib/supabase'
 
 const { width } = Dimensions.get('window')
 
+/**
+ * LoginScreen Component
+ *
+ * Manages the user login process via Supabase authentication.
+ *
+ * @returns {JSX.Element} The rendered login screen.
+ */
 export default function LoginScreen() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
+  /**
+   * Signs in the user using email and password.
+   */
   async function signInWithEmail() {
     setLoading(true)
     const { error } = await supabase.auth.signInWithPassword({
@@ -30,7 +46,6 @@ export default function LoginScreen() {
 
   return (
     <View flex={1} backgroundColor="white">
-      {/* Hero Image Section */}
       <View height={320} width="100%" position="relative">
         <Image 
           source={{ uri: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=2000' }} 
@@ -49,7 +64,6 @@ export default function LoginScreen() {
         />
       </View>
 
-      {/* Form Section */}
       <YStack 
         flex={1} 
         marginTop="$-4" 
@@ -72,7 +86,6 @@ export default function LoginScreen() {
             borderColor="transparent"
             borderRadius="$4"
             height={50}
-            // fontFamily="Montserrat"
             />
             
             <View width="100%" height={50} justifyContent="center">
@@ -84,8 +97,8 @@ export default function LoginScreen() {
                     onChangeText={setPassword}
                     value={password}
                     style={{
-                        backgroundColor: '#f3f4f6', // Equivalent to $gray2
-                        borderRadius: 9, // Equivalent to $4
+                        backgroundColor: '#f3f4f6',
+                        borderRadius: 9,
                         height: 50,
                         paddingHorizontal: 15,
                         paddingRight: 50,
@@ -139,6 +152,15 @@ export default function LoginScreen() {
   )
 }
 
+/**
+ * SocialButton Component
+ *
+ * Renders a button for social login providers.
+ *
+ * @param {object} props - The component props.
+ * @param {string} props.image - The URL of the social provider's logo.
+ * @returns {JSX.Element} The rendered button component.
+ */
 function SocialButton({ image }: { image: string }) {
     return (
         <Button 

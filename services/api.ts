@@ -1,5 +1,10 @@
-// Service to interact with Angers Loire Métropole Open Data API (Opendatasoft)
-// Base URL: https://data.angers.fr/api/explore/v2.1/catalog/datasets
+/**
+ * Angers Open Data API Service
+ * 
+ * Provides methods to fetch data from the Angers Loire Métropole Open Data API,
+ * including stadiums, bike parkings, and car parking lots.
+ * Base URL: https://data.angers.fr/api/explore/v2.1/catalog/datasets
+ */
 
 const BASE_URL = 'https://data.angers.fr/api/explore/v2.1/catalog/datasets';
 
@@ -13,8 +18,6 @@ export interface AngersRecord<T> {
   total_count: number;
 }
 
-// ---- DATASETS TYPES ----
-
 export interface Stadium {
   nom: string;
   type: string;
@@ -22,45 +25,63 @@ export interface Stadium {
   geo_point_2d: GeoPoint;
   quartier?: string;
   acces_handicap?: string;
+  sol?: string;
+  eclairage?: string;
 }
 
 export interface BikeParking {
-  id_box: string;
-  nom: string; // e.g. "ABRI 3"
-  capacite: string; // e.g. "10"
-  type: string; // "ABRI COLLECTIF", "BOX VELO SECURISE"
-  acces: string; // "LIBRE", "ABONNEMENT"
+  id_box?: string;
+  nom_parkng: string;
+  capacite: string; 
+  type: string;
+  acces: string;
   geo_point_2d: GeoPoint;
-  voie?: string; 
+  voie?: string;
+  gestion?: string;
+  contexte?: string;
+  date_maj?: string;
 }
 
 export interface ParkingLot {
-  id: string; // "49007-P-003"
-  nom: string; // "Parking Fleur d'Eau Les Halles"
-  type_usagers: string; // "tous"
+  id: string;
+  nom: string;
+  adresse?: string;
+  url?: string;
+  type_usagers: string;
   gratuit: string; // "FAUX" or "VRAI"
   nb_places: number;
-  nb_pr?: number; // Places rapidos ?
-  nb_pmr?: number; // Places PMR
+  nb_pr?: number;
+  nb_pmr?: number;
   nb_voitures_electriques?: number;
   nb_velo?: number;
+  hauteur_max?: string | number;
+  tarif_1h?: number;
+  tarif_2h?: number;
+  tarif_3h?: number;
+  tarif_4h?: number;
+  tarif_24h?: number;
+  horaires_ouverture?: string;
+  horaires_fermeture?: string;
+  accessibilite?: string;
   type_ouvrage?: string;
   info?: string | null;
-  geo_point_2d?: GeoPoint;
-  ylat?: number;
-  xlong?: number;
-  id_parking: string; // "Republique"
+  geo_point_2d?: GeoPoint | string; 
+  ylat?: number | string;
+  xlong?: number | string;
+  id_parking: string;
 }
 
-// Helper to fetch all pages
+/**
+ * Helper to fetch all pages of a dataset from the API.
+ * @param datasetId The ID of the dataset to fetch.
+ */
 const fetchAllPages = async <T>(datasetId: string): Promise<AngersRecord<T>> => {
   let allResults: T[] = [];
   let offset = 0;
-  const limit = 100; // Max allowed by API per page
+  const limit = 100;
   let totalCount = 0;
   
   try {
-    // First call to get total count and first batch
     while (true) {
         const url = `${BASE_URL}/${datasetId}/records?limit=${limit}&offset=${offset}`;
         const response = await fetch(url);
@@ -70,7 +91,6 @@ const fetchAllPages = async <T>(datasetId: string): Promise<AngersRecord<T>> => 
         allResults = [...allResults, ...data.results];
         totalCount = data.total_count;
 
-        // Break if we have all records or if no results returned (safety)
         if (allResults.length >= totalCount || data.results.length === 0) {
             break;
         }
@@ -86,21 +106,21 @@ const fetchAllPages = async <T>(datasetId: string): Promise<AngersRecord<T>> => 
 
 export const AngersAPI = {
   /**
-   * Fetch sports facilities (stadiums, fields, etc.)
+   * Fetches stadiums and other sports facilities.
    */
   getStadiums: async (): Promise<AngersRecord<Stadium>> => {
     return fetchAllPages<Stadium>('angers_stadium');
   },
 
   /**
-   * Fetch bike parking spots
+   * Fetches bike parking spots (boxes and shelters).
    */
   getBikeParkings: async (): Promise<AngersRecord<BikeParking>> => {
     return fetchAllPages<BikeParking>('parking-velo-angers');
   },
 
   /**
-   * Fetch car parking lots
+   * Fetches car parking lots (free and paid).
    */
   getCarParkings: async (): Promise<AngersRecord<ParkingLot>> => {
     return fetchAllPages<ParkingLot>('angers_stationnement');
