@@ -13,10 +13,10 @@
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-navigation/native": "^7.1.8",
     "@supabase/supabase-js": "^2.89.0",
-    "@tamagui/config": "^1.143.1",
-    "@tamagui/core": "^1.143.1",
-    "@tamagui/font-inter": "^1.143.1",
-    "@tamagui/shorthands": "^1.143.1",
+    "@tamagui/config": "1.144.4",
+    "@tamagui/core": "1.144.4",
+    "@tamagui/font-inter": "1.144.4",
+    "@tamagui/shorthands": "1.144.4",
     "@tanstack/react-query": "^5.90.16",
     "expo": "~54.0.30",
     "expo-constants": "~18.0.12",
@@ -38,12 +38,12 @@
     "react-native-url-polyfill": "^3.0.0",
     "react-native-web": "~0.21.0",
     "react-native-worklets": "0.5.1",
-    "tamagui": "^1.143.1"
+    "tamagui": "1.144.4"
   },
   "devDependencies": {
-    "@tamagui/babel-plugin": "^1.143.1",
-    "@tamagui/metro-plugin": "^1.143.1",
-    "@tamagui/react-native-web-lite": "^1.143.1",
+    "@tamagui/babel-plugin": "1.144.4",
+    "@tamagui/metro-plugin": "1.144.4",
+    "@tamagui/react-native-web-lite": "1.144.4",
     "@types/react": "~19.1.0",
     "react-test-renderer": "19.1.0",
     "typescript": "~5.9.2"
